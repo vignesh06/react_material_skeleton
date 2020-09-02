@@ -30,6 +30,7 @@ const ResetPasswordView = () => {
   const [username, setuserName] = useState('');
   const [newPassword, setnewPassword] = useState('');
   const [confirmPassword, setconfirmPassword] = useState('');
+  const [isValidEmail, setisValidEmail] = useState(false);
   //function to resetPassword 
   const resetPassword = async () => {
     let url = UrlConstant.Ip + UrlConstant.resetpassword
@@ -37,6 +38,17 @@ const ResetPasswordView = () => {
     let responsedata=await HTTPService(url, 'post',data)
     navigate('/login', { replace: true });
   }
+
+    //function to verify email 
+    const verifyEmail = async () => {
+      let url = UrlConstant.Ip + UrlConstant.verifyemail
+      let data={"username":username}
+      let responsedata=await HTTPService(url, 'post',data)
+      if(responsedata.is_valid_email){
+        setisValidEmail(true)
+      }
+    }
+
   return (
     <Page
       className={classes.root}
@@ -57,7 +69,7 @@ const ResetPasswordView = () => {
               {labels.forgotPassword.lbl_Forgot_Password}
             </Typography>
           </Box>
-          <TextField
+          {!isValidEmail?<><TextField
             fullWidth
             label="Email Address"
             margin="normal"
@@ -67,7 +79,20 @@ const ResetPasswordView = () => {
             value={username}
             variant="outlined"
           />
-          <TextField
+          <Box my={2}>
+            <Button
+              color="primary"
+              disabled={!(username)}
+              fullWidth
+              size="large"
+              type="submit"
+              variant="contained"
+              onClick={() => verifyEmail()}
+            >
+              Verify Email
+                  </Button>
+          </Box></>:
+          <><TextField
             fullWidth
             label="New Password"
             margin="normal"
@@ -90,7 +115,7 @@ const ResetPasswordView = () => {
           <Box my={2}>
             <Button
               color="primary"
-              disabled={!(username && newPassword && confirmPassword)}
+              disabled={!(newPassword&&confirmPassword)}
               fullWidth
               size="large"
               type="submit"
@@ -99,7 +124,7 @@ const ResetPasswordView = () => {
             >
               Reset Password
                   </Button>
-          </Box>
+          </Box></>}
         </Container>
       </Box>
     </Page>

@@ -10,7 +10,7 @@ const HTTPService = async (url, method, data) => {
     return response.data;
   })
     .catch(function (apiError) {
-        localStorage.setItem(localstorageConstants.IsLoggedIn,false)
+        // localStorage.setItem(localstorageConstants.IsLoggedIn,false)
         if (apiError.status === 500) {
           // navigate('/internal-server-error', { replace: true });
         }else{

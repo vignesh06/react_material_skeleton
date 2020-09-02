@@ -38,7 +38,9 @@ const RegisterView = () => {
     let url = UrlConstant.Ip + UrlConstant.signup
     let data = { "firstName": firstName, "lastName": lastName, "email": email, "password": password }
     let responsedata = await HTTPService(url, 'post', data)
-    navigate('/login', { replace: true });
+    if(responsedata.is_user_created){
+      navigate('/login', { replace: true });
+    }
   }
   return (
     <Page
